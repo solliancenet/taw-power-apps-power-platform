@@ -113,7 +113,7 @@ resource appServiceAccount 'Microsoft.Web/sites@2022-03-01' = {
         }
       ]
       phpVersion: 'OFF'
-      netFrameworkVersion: 'v5.0'
+      netFrameworkVersion: 'v7.0'
       alwaysOn: true
     }
     serverFarmId: hostingPlan.id
