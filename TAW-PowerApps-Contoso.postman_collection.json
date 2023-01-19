@@ -12,23 +12,68 @@
 					"name": "GetStatus",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{urlroot}}/HealthCheck",
+							"host": [
+								"{{urlroot}}"
+							],
+							"path": [
+								"HealthCheck"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "AddStatus1",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"patientid\": \"5\",\r\n        \"date\": \"2021-09-01T00:41:49.9602636+00:00\",\r\n        \"healthstatus\": \"I feel healthy\",\r\n        \"symptoms\": [\r\n            \"None\"\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlroot}}/HealthCheck",
+							"host": [
+								"{{urlroot}}"
+							],
+							"path": [
+								"HealthCheck"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "AddStatus2",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"patientid\": \"5\",\r\n        \"date\": \"2021-09-04T00:41:49.9602636+00:00\",\r\n        \"healthstatus\": \"I feel unwell\",\r\n        \"symptoms\": [\r\n            \"Hair loss\",\r\n            \"Internal bleeding\",\r\n            \"Temporary blindness\"\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{urlroot}}/HealthCheck",
+							"host": [
+								"{{urlroot}}"
+							],
+							"path": [
+								"HealthCheck"
+							]
+						}
 					},
 					"response": []
 				},
@@ -47,12 +92,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/HealthCheck",
-							"protocol": "http",
+							"raw": "{{urlroot}}/HealthCheck",
 							"host": [
-								"localhost"
+								"{{urlroot}}"
 							],
-							"port": "5000",
 							"path": [
 								"HealthCheck"
 							]
@@ -64,7 +107,17 @@
 					"name": "GetStatuses",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{urlroot}}/HealthCheck/",
+							"host": [
+								"{{urlroot}}"
+							],
+							"path": [
+								"HealthCheck",
+								""
+							]
+						}
 					},
 					"response": []
 				}
@@ -77,17 +130,24 @@
 					"name": "GetPatient",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{urlroot}}/Patient/GetPatient",
+							"host": [
+								"{{urlroot}}"
+							],
+							"path": [
+								"Patient",
+								"GetPatient"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "AddPatient5",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -99,12 +159,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/Patient",
-							"protocol": "http",
+							"raw": "{{urlroot}}/Patient",
 							"host": [
-								"localhost"
+								"{{urlroot}}"
 							],
-							"port": "5000",
 							"path": [
 								"Patient"
 							]
@@ -114,11 +172,8 @@
 				},
 				{
 					"name": "AddPatient1",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -130,12 +185,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/Patient",
-							"protocol": "http",
+							"raw": "{{urlroot}}/Patient",
 							"host": [
-								"localhost"
+								"{{urlroot}}"
 							],
-							"port": "5000",
 							"path": [
 								"Patient"
 							]
@@ -145,15 +198,12 @@
 				},
 				{
 					"name": "AddPatient2",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "   {\r\n        \"patientid\": \"1\",        \r\n        \"name\": \"Contoso Patient 1\"\r\n    }",
+							"raw": "   {\r\n        \"patientid\": \"2\",        \r\n        \"name\": \"Contoso Patient 2\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -161,12 +211,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/Patient",
-							"protocol": "http",
+							"raw": "{{urlroot}}/Patient",
 							"host": [
-								"localhost"
+								"{{urlroot}}"
 							],
-							"port": "5000",
 							"path": [
 								"Patient"
 							]
@@ -180,12 +228,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/Patient/1",
-							"protocol": "http",
+							"raw": "{{urlroot}}/Patient/1",
 							"host": [
-								"localhost"
+								"{{urlroot}}"
 							],
-							"port": "5000",
 							"path": [
 								"Patient",
 								"1"
@@ -200,15 +246,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/Patient/1",
-							"protocol": "http",
+							"raw": "{{urlroot}}/Patient/5",
 							"host": [
-								"localhost"
+								"{{urlroot}}"
 							],
-							"port": "5000",
 							"path": [
 								"Patient",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -218,7 +262,16 @@
 					"name": "GetAllPatients",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{urlroot}}/Patient",
+							"host": [
+								"{{urlroot}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
 					},
 					"response": []
 				},
@@ -229,7 +282,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "   {\r\n        \"id\": \"5\",\r\n        \"patientid\": \"5\",        \r\n        \"name\": \"Contoso Patient 5 Updated Name\"\r\n    }",
+							"raw": "   {\r\n        \"id\": \"5\",\r\n        \"patientid\": \"5\",        \r\n        \"name\": \"Contoso Patient 5 Updated Names\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -237,12 +290,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/Patient/5",
-							"protocol": "http",
+							"raw": "{{urlroot}}/Patient/5",
 							"host": [
-								"localhost"
+								"{{urlroot}}"
 							],
-							"port": "5000",
 							"path": [
 								"Patient",
 								"5"
@@ -254,12 +305,49 @@
 				{
 					"name": "DeletePatientFromDB",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{urlroot}}/Patient/1",
+							"host": [
+								"{{urlroot}}"
+							],
+							"path": [
+								"Patient",
+								"1"
+							]
+						}
 					},
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "urlroot",
+			"value": "http://localhost:5000",
+			"type": "default"
 		}
 	]
 }
