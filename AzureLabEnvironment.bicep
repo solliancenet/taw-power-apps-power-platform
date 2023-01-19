@@ -20,8 +20,6 @@ param publisherName string
 
 param location string = resourceGroup().location
 param cosmosDbAccountName string = 'cosmos-${workload}-${environment}-${uniqueSuffix}'
-param cosmosDbName string = 'HealthCheckDB'
-param cosmosContainerName string = 'HealthCheck'
 param apiManagementServiceName string = 'apim-${workload}-${environment}-${uniqueSuffix}'
 param hostingPlanName string = 'plan-${workload}-${environment}-${region}-${uniqueSuffix}'
 param appServiceAccountName string = 'app-${workload}-${environment}-${region}-${uniqueSuffix}'
@@ -60,32 +58,6 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' = {
   }
 }
 
-resource cosmosDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-08-15' = {
-  name: '${cosmosDbAccount.name}/${cosmosDbName}'
-  properties: {
-    resource: {
-      id: cosmosDbName
-    }
-  }
-}
-
-resource cosmosDatabaseContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2022-08-15' = {
-  name: '${cosmosDatabase.name}/${cosmosContainerName}'
-  properties: {
-    resource: {
-      id: cosmosContainerName
-      partitionKey: {
-        paths: [
-          '/id'
-        ]
-        kind: 'Hash'
-      }
-    }
-    options: {
-      throughput: 400
-    }
-  }
-}
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: hostingPlanName
