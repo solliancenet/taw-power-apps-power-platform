@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace Contoso.Healthcare
@@ -29,8 +30,8 @@ namespace Contoso.Healthcare
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Contoso.Healthcare", Version = "v1" });
             });
-            services.AddSingleton<ICosmosDbService<HealthCheck>>(InitializeHealthCheckService(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddSingleton<ICosmosDbService<Patient>>(InitializePatientService(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbService<HealthCheck>>(InitializeHealthCheckService().GetAwaiter().GetResult());
+            services.AddSingleton<ICosmosDbService<Patient>>(InitializePatientService().GetAwaiter().GetResult());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,26 +57,26 @@ namespace Contoso.Healthcare
         /// Creates a Cosmos DB database and a container with the specified partition key. 
         /// </summary>
         /// <returns></returns>
-        private static async Task<CosmosClient> InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
+        private static async Task<CosmosClient> InitializeCosmosClientInstanceAsync()
         {
-            string databaseName = configurationSection.GetSection("DatabaseName").Value;
-            string containerName = configurationSection.GetSection("ContainerName").Value;
-            string account = configurationSection.GetSection("Account").Value;
-            string key = configurationSection.GetSection("Key").Value;
+            string databaseName = Environment.GetEnvironmentVariable("PowerAppsLabDatabaseName")!;
+            string containerName = Environment.GetEnvironmentVariable("PowerAppsLabContainerName")!;
+            string account = Environment.GetEnvironmentVariable("PowerAppsLabAccount")!;
+            string key = Environment.GetEnvironmentVariable("PowerAppsLabKey")!;
             Microsoft.Azure.Cosmos.CosmosClient client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
             Microsoft.Azure.Cosmos.DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/PatientId");
             return client;
         }
 
-        private static async Task<PatientCosmosDbService> InitializePatientService(IConfigurationSection configurationSection){
-            CosmosClient client = await InitializeCosmosClientInstanceAsync(configurationSection);
-            return new PatientCosmosDbService(client,configurationSection.GetSection("DatabaseName").Value, configurationSection.GetSection("ContainerName").Value);
+        private static async Task<PatientCosmosDbService> InitializePatientService(){
+            CosmosClient client = await InitializeCosmosClientInstanceAsync();
+            return new PatientCosmosDbService(client,Environment.GetEnvironmentVariable("PowerAppsLabDatabaseName")!, Environment.GetEnvironmentVariable("PowerAppsLabContainerName")!);
         }
 
-        private static async Task<HealthCheckCosmosDbService> InitializeHealthCheckService(IConfigurationSection configurationSection){
-            CosmosClient client = await InitializeCosmosClientInstanceAsync(configurationSection);
-            return new HealthCheckCosmosDbService(client,configurationSection.GetSection("DatabaseName").Value, configurationSection.GetSection("ContainerName").Value);
+        private static async Task<HealthCheckCosmosDbService> InitializeHealthCheckService(){
+            CosmosClient client = await InitializeCosmosClientInstanceAsync();
+            return new HealthCheckCosmosDbService(client,Environment.GetEnvironmentVariable("PowerAppsLabDatabaseName")!, Environment.GetEnvironmentVariable("PowerAppsLabContainerName")!);
         }
     }
 }
