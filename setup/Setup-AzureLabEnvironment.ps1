@@ -14,7 +14,7 @@
 # Set script variables
 # 
 $BicepFilePath = ".\AzureLabEnvironment.bicep"
-$Workload = "app-plat"
+$Workload = "power-plat"
 $Environment = "train"
 
 # Get information from training user
@@ -54,8 +54,8 @@ $AzureResourcesDeploymentName = "$Workload-$Environment-$AzureResourcesLocation-
 $PublisherEmail = Read-Host "Enter your e-mail address. API Management uses this as part of its publisher properties"
 $PublisherName = Read-Host "Enter your organization's name. API Management uses this as part of its publisher properties"
 
-# Build Bicep paremeter object for Bicep deployment parameters
-$BicepParemeters = @{
+# Build Bicep parameter object for Bicep deployment parameters
+$BicepParameters = @{
     uniqueSuffix = $UniqueSuffix;
     workload = $Workload;
     environment = $Environment;
@@ -98,7 +98,7 @@ Start-Sleep -Seconds 2
         -Name $AzureResourcesDeploymentName `
         -Mode Complete `
         -TemplateFile $BicepFilePath `
-        -TemplateParameterObject $BicepParemeters `
+        -TemplateParameterObject $BicepParameters `
         -Force
 
         Write-Host "Resources deployed to [$TrainingResourceGroup]."
@@ -142,7 +142,7 @@ Set-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -Ap
 # Zip application folder
 Write-Information "Compressing the API to a ZIP file for deployment..."
 Set-Location ..
-Compress-Archive -Path "./Contoso.Healthcare/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
+Compress-Archive -Path "./Contoso.Healthcare/bin/Release/net7.0/publish/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
 
 # Deploy application to App Service
 Write-Information "Deploying the API to Azure App Service..."
