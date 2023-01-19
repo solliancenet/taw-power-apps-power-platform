@@ -78,12 +78,6 @@ resource appServiceAccount 'Microsoft.Web/sites@2022-03-01' = {
   properties: {
     siteConfig: {
       appSettings: []
-      metadata: [
-        {
-          name: 'CURRENT_STACK'
-          value: 'dotnet'
-        }
-      ]
       phpVersion: 'OFF'
       netFrameworkVersion: 'v7.0'
       alwaysOn: true
