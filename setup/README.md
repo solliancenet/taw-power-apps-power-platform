@@ -33,3 +33,21 @@ To deploy the resources, run the following command in PowerShell:
 ```powershell
 .\Setup-AzureLabEnvironment.ps1
 ```
+
+## Run the API locally
+
+If you want to run the API locally, then use the following commands:
+
+```powershell
+cd ..\Contoso.Healthcare
+dotnet run
+```
+
+The output of this command will show you the URL it is running on. By default, it should be `http://localhost:5000`.
+
+## Testing the API with Postman
+
+We have included a [Postman collection](./TAW-PowerApps-Contoso.postman_collection.json) to test the API.
+
+* There is a variable named `urlroot` that is defaulted to `http://localhost:5000`. This is initially set up to test the API locally.
+* Once deployed to Azure, you can set the `urlroot` to the `https://YOUR_APP_SERVICE.azurewebsites.net` URL to test the API in Azure.
