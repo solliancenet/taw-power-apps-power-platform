@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Contoso.Healthcare.Models
 {
-    public class HealthCheck
+    public class HealthCheck    
     {
         [JsonPropertyName("id")]
         public string id { get; set; } //This property has to be lowercase "id" because of a bug in CosmosDB
+        public string type="status";
         [JsonPropertyName("patientid")]
-        public int PatientID { get; set; }
+        public string PatientId { get; set; }
         [JsonPropertyName("date")]
         public DateTime Date { get; set; }
         [JsonPropertyName("healthstatus")]

@@ -1,37 +1,34 @@
 ﻿using Contoso.Healthcare.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Fluent;
-using Microsoft.Extensions.Configuration;
 
 namespace Contoso.Healthcare.Services
 {
-    public class CosmosDbService : ICosmosDbService
+    public class HealthCheckCosmosDbService : ICosmosDbService<HealthCheck>
     {
         private Container _container;
-        public CosmosDbService(
+        public HealthCheckCosmosDbService(
             CosmosClient cosmosDbClient,
             string databaseName,
             string containerName)
         {
             _container = cosmosDbClient.GetContainer(databaseName, containerName);
         }
-        public async Task AddAsync(HealthCheck item)
+        public async Task<ItemResponse<HealthCheck>> AddAsync(HealthCheck item)
         {
-            await _container.CreateItemAsync(item, new PartitionKey(item.id));
+           return await _container.CreateItemAsync(item, new PartitionKey(item.PatientId));
         }
-        public async Task DeleteAsync(string id)
+        public async Task<ItemResponse<HealthCheck>> DeleteAsync(string id, string patientId)
         {
-            await _container.DeleteItemAsync<HealthCheck>(id, new PartitionKey(id));
+            return await _container.DeleteItemAsync<HealthCheck>(id, new PartitionKey(patientId));
         }
-        public async Task<HealthCheck> GetAsync(string id)
+        public async Task<HealthCheck> GetAsync(string id, string patientId)
         {
             try
             {
-                var response = await _container.ReadItemAsync<HealthCheck>(id, new PartitionKey(id));
+                var response = await _container.ReadItemAsync<HealthCheck>(id, new PartitionKey(patientId));
                 return response.Resource;
             }
             catch (CosmosException) //For handling item not found and other exceptions
@@ -50,9 +47,9 @@ namespace Contoso.Healthcare.Services
             }
             return results;
         }
-        public async Task UpdateAsync(string id, HealthCheck item)
+        public async Task<ItemResponse<HealthCheck>> UpdateAsync(string id, HealthCheck item)
         {
-            await _container.UpsertItemAsync(item, new PartitionKey(id));
+            return await _container.UpsertItemAsync(item, new PartitionKey(item.PatientId));
         }
     }
 }

@@ -1,17 +1,15 @@
-﻿using Contoso.Healthcare.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos;
 
 namespace Contoso.Healthcare.Services
 {
-    public interface ICosmosDbService
+    public interface ICosmosDbService<T>
     {
-        Task<IEnumerable<HealthCheck>> GetMultipleAsync(string query);
-        Task<HealthCheck> GetAsync(string id);
-        Task AddAsync(HealthCheck item);
-        Task UpdateAsync(string id, HealthCheck item);
-        Task DeleteAsync(string id);
+        Task<IEnumerable<T>> GetMultipleAsync(string query);
+        Task<T> GetAsync(string id, string patientId);
+        Task<ItemResponse<T>> AddAsync(T item);
+        Task<ItemResponse<T>> UpdateAsync(string id, T item);
+        Task<ItemResponse<T>> DeleteAsync(string id, string patientId);
     }
 }
