@@ -1,10 +1,14 @@
 # 
-# Script to setup lab environment for the Win with App Platform training session
+# Script to setup lab environment for the Power Apps training session
 # 
 
 # 
 # Script will gather some basic information, log in to the trainee's Azure environment, and utilize Bicep template(s) to build out the Azure lab environment.
 # 
+
+# For this script to work, Bicep will need to be installed. 
+# As we are running this in a PowerShell script, have them follow these steps if Bicep isn't installed:
+# https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#azure-powershell
 
 # 
 # Set script variables
@@ -16,8 +20,7 @@ $Environment = "train"
 # Get information from training user
 Write-Host "First, we will gather some information to prep for resource deployment."
 Start-Sleep -Seconds 2
-$AzureSubscription = Read-Host "Input the Subscription ID of the Azure subscription to use"
-$AzureResourcesLocation = Read-Host "Input the Azure region where you would like to deploy resources. Do not use spaces. (eastus, westeurope, etc)"
+$AzureSubscription = Read-Host "Input the Subscription ID or Subscription Name of the Azure subscription to use"
 Start-Sleep -Seconds 2
 
 # Log in to Azure Cloud and set the default subscription to use for deploying training resources
@@ -31,6 +34,12 @@ Start-Sleep -Seconds 2
         "We were unable to login to Azure."
         Write-Error $_
     }
+
+# Get the region for deployment
+Read-Host "You will need to enter a Location for hosting your resources. Press any key to see the list"
+Get-AzLocation | Select-Object DisplayName, Location | Sort-Object Location
+$AzureResourcesLocation = Read-Host "Input the Azure region (Location) where you would like to deploy resources. Do not use spaces. (eastus, westeurope, etc)"
+Start-Sleep -Seconds 2
 
 # Get information to deploy Bicep template
 Write-Host "Next, we will gather some information to configure the Azure resources that will be deployed."
@@ -63,7 +72,7 @@ $CosmosDBContainerName = "HealthCheck"
 # $AppServicePlanName = "plan-$Workload-$Environment-$AzureResourcesLocation-$UniqueSuffix"
 $AppServiceName = "app-$Workload-$Environment-$AzureResourcesLocation-$UniqueSuffix"
 
-Write-Host "Thank you, resource deployment will now begin."
+Write-Host "Thank you! Now deploying these resources..."
 Start-Sleep -Seconds 2
 
 # Build tsi-win-with-app-platform resource group
@@ -100,15 +109,11 @@ Start-Sleep -Seconds 2
         Write-Error $_
     }
 
-Write-Information "The training's pre-deployment of Azure resources is now complete."
-
 # Change working directory to dotnet app and restore/build the dotnet project
-Set-Location -Path ".\Contoso.Healthcare"
+Write-Information "Building the API code..."
+Set-Location -Path "..\Contoso.Healthcare"
 dotnet restore
 dotnet build
-
-# Get the contents of the appsettings.json file and convert it to a PowerShell object from JSON
-$AppSettings = Get-Content -Path ".\appsettings.json" -Raw | ConvertFrom-Json
 
 # Get the CosmosDB URL and Primary Master Key values from the CosmosDB Azure resource
 $CosmosDB = Get-AzCosmosDBAccount -ResourceGroupName $TrainingResourceGroup -Name $CosmosDBAccountName
@@ -117,30 +122,30 @@ $CosmosDBUri = $CosmosDB.DocumentEndpoint
 $CosmosDBAccountKey = Get-AzCosmosDBAccountKey -ResourceGroupName $TrainingResourceGroup -Name $CosmosDBAccountName
 $CosmosDBAccountKeyPrimaryMasterKey = $CosmosDBAccountKey.PrimaryMasterKey
 
-# Update the Appsettings PowerShell object with the values from the CosmosDB Azure resource
-$AppSettings.CosmosDb.Account = $CosmosDBUri
-$AppSettings.CosmosDb.Key = $CosmosDBAccountKeyPrimaryMasterKey
-
-# Convert the PowerShell object to JSON format and overwrite the appsettings.json file with the new data from the CosmosDB Azure resource
-$AppSettingsJson = ConvertTo-Json -InputObject $AppSettings
-Out-File -InputObject $AppSettingsJson -FilePath ".\appsettings.json"
-
-# 
-# All of this below is not finished/working/tested
-# 
+# Update current environment variables with the values for the CosmosDB Azure resource
+# These are used if you are running the API locally
+$env:PowerAppsLabAccount = "$CosmosDBUri";
+$env:PowerAppsLabKey = "$CosmosDBAccountKeyPrimaryMasterKey";
+$env:PowerAppsLabDatabaseName = "$CosmosDBName";
+$env:PowerAppsLabContainerName = "$CosmosDBContainerName"
 
 # Change App Service Appsettings inside of Azure
+Write-Information "Setting the environment variables on Azure App Service..."
 $AzureAppSettings = @{
-    Account = "$CosmosDBUri";
-    Key = "$CosmosDBAccountKeyPrimaryMasterKey";
-    DatabaseName = "$CosmosDBName";
-    ContainerName = "$CosmosDBContainerName"
+    PowerAppsLabAccount = "$CosmosDBUri";
+    PowerAppsLabKey = "$CosmosDBAccountKeyPrimaryMasterKey";
+    PowerAppsLabDatabaseName = "$CosmosDBName";
+    PowerAppsLabContainerName = "$CosmosDBContainerName"
 }
 Set-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -AppSettings $AzureAppSettings
 
 # Zip application folder
+Write-Information "Compressing the API to a ZIP file for deployment..."
 Set-Location ..
 Compress-Archive -Path "./Contoso.Healthcare/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
 
 # Deploy application to App Service
+Write-Information "Deploying the API to Azure App Service..."
 Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath "./Contoso.Healthcare.zip" -Force
+
+Write-Information "The training's pre-deployment and initial configuration of Azure resources is now complete."
