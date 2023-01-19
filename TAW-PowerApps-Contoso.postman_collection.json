@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "f39c5d70-653a-4163-bd27-11f46379a745",
+		"name": "TAW-PowerApps-Contoso",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "HealthChecks",
+			"item": [
+				{
+					"name": "GetStatus",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "AddStatus1",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "AddStatus2",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "AddStatus3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n        \"patientid\": \"5\",\r\n        \"date\": \"2021-09-08T00:41:49.9602636+00:00\",\r\n        \"healthstatus\": \"I feel healthy\",\r\n        \"symptoms\": [\r\n            \"Hair regrowth\",\r\n            \"Ennui\"\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/HealthCheck",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"HealthCheck"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetStatuses",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patients",
+			"item": [
+				{
+					"name": "GetPatient",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "AddPatient5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"patientid\": \"5\",        \r\n        \"name\": \"Contoso Patient 5\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/Patient",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddPatient1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"patientid\": \"1\",        \r\n        \"name\": \"Contoso Patient 1\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/Patient",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddPatient2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"patientid\": \"1\",        \r\n        \"name\": \"Contoso Patient 1\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/Patient",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPatient1FromDB",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/Patient/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"Patient",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPatient5FromDB",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/Patient/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"Patient",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllPatients",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePatient5",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   {\r\n        \"id\": \"5\",\r\n        \"patientid\": \"5\",        \r\n        \"name\": \"Contoso Patient 5 Updated Name\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/Patient/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"Patient",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeletePatientFromDB",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
