@@ -17,6 +17,18 @@ $BicepFilePath = ".\AzureLabEnvironment.bicep"
 $Workload = "power-plat"
 $Environment = "train"
 
+# Install/import the Az PowerShell module
+if (Get-Module -Name Az -ListAvailable) {
+    Write-Host "The Az module is installed. Importing now..."
+    Import-Module -Name Az
+    Write-Host "The Az module is now imported."
+} else {
+    Write-Host "The Az module is not installed. Installing..."
+    Install-Module -Name Az -Force
+    Import-Module -Name Az
+    Write-Host "The Az module is now installed."
+}
+
 # Get information from training user
 Write-Host "First, we will gather some information to prep for resource deployment."
 Start-Sleep -Seconds 2
@@ -141,11 +153,13 @@ Set-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -Ap
 
 # Zip application folder
 Write-Information "Compressing the API to a ZIP file for deployment..."
+$ZipFile = "Contoso.Healthcare.zip"
 Set-Location ..
-Compress-Archive -Path "./Contoso.Healthcare/bin/Release/net7.0/publish/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
+# Compress-Archive -Path "./Contoso.Healthcare/bin/Release/net7.0/publish/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
+Compress-Archive -Path "./Contoso.Healthcare/bin/Debug/net7.0/*" -DestinationPath "./$ZipFile" -Update
 
 # Deploy application to App Service
 Write-Information "Deploying the API to Azure App Service..."
-Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath "./Contoso.Healthcare.zip" -Force
+Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath "./$ZipFile" -Force
 
 Write-Information "The training's pre-deployment and initial configuration of Azure resources is now complete."

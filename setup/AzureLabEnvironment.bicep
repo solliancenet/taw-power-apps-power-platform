@@ -62,6 +62,7 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' = {
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: hostingPlanName
   location: location
+  kind: 'app'
   properties: {
     targetWorkerSizeId: 0
     targetWorkerCount: 1
@@ -75,6 +76,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 resource appServiceAccount 'Microsoft.Web/sites@2022-03-01' = {
   name: appServiceAccountName
   location: location
+  kind: 'app'
   properties: {
     siteConfig: {
       appSettings: []
