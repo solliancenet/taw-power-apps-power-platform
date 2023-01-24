@@ -125,7 +125,7 @@ Start-Sleep -Seconds 2
 Write-Information "Building the API code..."
 Set-Location -Path "..\Contoso.Healthcare"
 dotnet restore
-dotnet build
+dotnet build --configuration Release
 
 # Get the CosmosDB URL and Primary Master Key values from the CosmosDB Azure resource
 $CosmosDB = Get-AzCosmosDBAccount -ResourceGroupName $TrainingResourceGroup -Name $CosmosDBAccountName
@@ -155,8 +155,7 @@ Set-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -Ap
 Write-Information "Compressing the API to a ZIP file for deployment..."
 $ZipFile = "Contoso.Healthcare.zip"
 Set-Location ..
-# Compress-Archive -Path "./Contoso.Healthcare/bin/Release/net7.0/publish/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
-Compress-Archive -Path "./Contoso.Healthcare/bin/Debug/net7.0/*" -DestinationPath "./$ZipFile" -Update
+Compress-Archive -Path "./Contoso.Healthcare/bin/Release/net7.0/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
 
 # Deploy application to App Service
 Write-Information "Deploying the API to Azure App Service..."

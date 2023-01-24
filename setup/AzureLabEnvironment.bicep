@@ -32,7 +32,6 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' = {
     databaseAccountOfferType: 'Standard'
     locations: [
       {
-        // id: '${cosmosDbAccountName}-${location}'
         failoverPriority: 0
         locationName: location
       }
@@ -81,6 +80,12 @@ resource appServiceAccount 'Microsoft.Web/sites@2022-03-01' = {
     siteConfig: {
       appSettings: []
       phpVersion: 'OFF'
+      metadata :[
+        {
+          name:'CURRENT_STACK'
+          value:'dotnet'
+        }
+      ]
       netFrameworkVersion: 'v7.0'
       alwaysOn: true
     }
