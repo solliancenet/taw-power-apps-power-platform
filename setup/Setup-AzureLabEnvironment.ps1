@@ -24,7 +24,7 @@ if (Get-Module -Name Az -ListAvailable) {
     Write-Host "The Az module is now imported."
 } else {
     Write-Host "The Az module is not installed. Installing..."
-    Install-Module -Name Az -Force
+    Install-Module -Name Az -Force -AllowClobber
     Import-Module -Name Az
     Write-Host "The Az module is now installed."
 }
