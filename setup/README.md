@@ -34,6 +34,34 @@ To deploy the resources, run the following command in PowerShell:
 .\Setup-AzureLabEnvironment.ps1
 ```
 
+### Common Troubleshooting Tips
+
+These are situations where you may run into problems and how you can fix them.
+
+#### Unable to resolve Nuget packages
+
+Are you seeing this message?
+
+```dotnetcli
+Unable to resolve ‘Microsoft.Azure.Cosmos (>= 3.31.2)’ for ‘net7.0’ and this one Unable to resolve ‘Swashbuckle.AspNetCore (>= 6.2.3)’ for ‘net7.0’. 
+```
+
+This means that Nuget can't get these packages for some reason.
+
+Run this command to see what your Nuget source is:
+
+```dotnetcli
+dotnet nuget list source
+```
+
+If you do not see any listings for sources, you need to [add the main nuget.org feed](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-nuget-add-source#examples) with this command:
+
+```dotnetcli
+dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org
+```
+
+Once you add this Nuget source, then you should rerun the Setup script.
+
 ## Run the API locally
 
 If you want to run the API locally, then use the following commands:
