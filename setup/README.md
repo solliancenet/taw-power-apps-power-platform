@@ -25,6 +25,7 @@ The PowerShell script will run the Bicep template to create the following resour
 The PowerShell script will also set up environment variables for the API to run locally as well as in Azure. It will deploy the API code to the Azure App Service.
 
 ## Deploy the Resources
+First you'll need to clone/download this repository to your local machine in order to be able to run the script and deploy the resourses to Azure. This repository has been designed and deployment scripts written to run on Windows.
 
 Before you run the PowerShell script, log into the Azure portal and get your Subscription ID or your Subscription Name. You will need this for PowerShell to connect to your Azure account.
 
