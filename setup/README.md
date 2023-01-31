@@ -20,7 +20,7 @@ The PowerShell script will run the Bicep template to create the following resour
 - Azure Cosmos DB for NoSQL account
 - API Management
 
-**Note:** If you have to re-run this script multiple times, note that API Management resources are soft deleted. If you get into this situation, check this site for more details: <https://aka.ms/apimsoftdelete>.
+**NOTE:** If you have to re-run this script multiple times, note that API Management resources are soft deleted. If you get into this situation, check this site for more details: <https://aka.ms/apimsoftdelete>.
 
 The PowerShell script will also set up environment variables for the API to run locally as well as in Azure. It will deploy the API code to the Azure App Service.
 
@@ -28,11 +28,13 @@ The PowerShell script will also set up environment variables for the API to run 
 
 First, you'll need to clone/download this repository to your local machine to run the script and deploy the resources to Azure. This repository contains deployment scripts written to run on Windows.
 
-Before you run the PowerShell script, log into the Azure portal and get your Subscription ID or your Subscription Name. You will need this for PowerShell to connect to your Azure account.
+**NOTE:**
+Before you run the PowerShell script, log into the Azure portal and get your **Subscription ID** or your **Subscription Name**. You will need this for PowerShell to connect to your Azure account.
 
 To deploy the resources, run the following command in PowerShell:
 
 ```powershell
+Set-Location -Path "<Local path to this repository root>\setup"
 .\Setup-AzureLabEnvironment.ps1
 ```
 
