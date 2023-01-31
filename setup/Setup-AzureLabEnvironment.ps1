@@ -155,10 +155,10 @@ Set-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -Ap
 Write-Information "Compressing the API to a ZIP file for deployment..."
 $ZipFile = "Contoso.Healthcare.zip"
 Set-Location ..
-Compress-Archive -Path "./Contoso.Healthcare/bin/Release/net7.0/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
+Compress-Archive -Path ".\Contoso.Healthcare\bin\Release\net7.0\*" -DestinationPath ".\Contoso.Healthcare.zip" -Update
 
 # Deploy application to App Service
 Write-Information "Deploying the API to Azure App Service..."
-Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath "./$ZipFile" -Force
+Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath ".\$ZipFile" -Force
 
 Write-Information "The training's pre-deployment and initial configuration of Azure resources is now complete."
