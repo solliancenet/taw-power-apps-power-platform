@@ -17,7 +17,7 @@ $BicepFilePath = ".\AzureLabEnvironment.bicep"
 $Workload = "power-plat"
 $Environment = "train"
 
-# Install/import the Az PowerShell module
+# Install\import the Az PowerShell module
 if (Get-Module -Name Az -ListAvailable) {
     Write-Host "The Az module is installed. Importing now..."
     Import-Module -Name Az
@@ -121,11 +121,14 @@ Start-Sleep -Seconds 2
         Write-Error $_
     }
 
-# Change working directory to dotnet app and restore/build the dotnet project
+# Change working directory to dotnet app and restore\build the dotnet project
 Write-Information "Building the API code..."
 Set-Location -Path "..\Contoso.Healthcare"
 dotnet restore
 dotnet build --configuration Release
+
+# Get the contents of the appsettings.json file and convert it to a PowerShell object from JSON
+$AppSettings = Get-Content -Path ".\appsettings.json" -Raw | ConvertFrom-Json
 
 # Get the CosmosDB URL and Primary Master Key values from the CosmosDB Azure resource
 $CosmosDB = Get-AzCosmosDBAccount -ResourceGroupName $TrainingResourceGroup -Name $CosmosDBAccountName
@@ -133,6 +136,14 @@ $CosmosDBUri = $CosmosDB.DocumentEndpoint
 
 $CosmosDBAccountKey = Get-AzCosmosDBAccountKey -ResourceGroupName $TrainingResourceGroup -Name $CosmosDBAccountName
 $CosmosDBAccountKeyPrimaryMasterKey = $CosmosDBAccountKey.PrimaryMasterKey
+
+# Update the Appsettings PowerShell object with the values from the CosmosDB Azure resource
+$AppSettings.CosmosDb.Account = $CosmosDBUri
+$AppSettings.CosmosDb.Key = $CosmosDBAccountKeyPrimaryMasterKey
+
+# Convert the PowerShell object to JSON format and overwrite the appsettings.json file with the new data from the CosmosDB Azure resource
+$AppSettingsJson = ConvertTo-Json -InputObject $AppSettings
+Out-File -InputObject $AppSettingsJson -FilePath ".\appsettings.json"
 
 # Update current environment variables with the values for the CosmosDB Azure resource
 # These are used if you are running the API locally
