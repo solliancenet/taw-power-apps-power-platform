@@ -13,11 +13,11 @@
 # 
 # Set script variables
 # 
-$BicepFilePath = "./AzureLabEnvironment.bicep"
+$BicepFilePath = ".\AzureLabEnvironment.bicep"
 $Workload = "power-plat"
 $Environment = "train"
 
-# Install/import the Az PowerShell module
+# Install\import the Az PowerShell module
 if (Get-Module -Name Az -ListAvailable) {
     Write-Host "The Az module is installed. Importing now..."
     Import-Module -Name Az
@@ -121,14 +121,14 @@ Start-Sleep -Seconds 2
         Write-Error $_
     }
 
-# Change working directory to dotnet app and restore/build the dotnet project
+# Change working directory to dotnet app and restore\build the dotnet project
 Write-Information "Building the API code..."
-Set-Location -Path "../Contoso.Healthcare"
+Set-Location -Path "..\Contoso.Healthcare"
 dotnet restore
 dotnet build --configuration Release
 
 # Get the contents of the appsettings.json file and convert it to a PowerShell object from JSON
-$AppSettings = Get-Content -Path "./appsettings.json" -Raw | ConvertFrom-Json
+$AppSettings = Get-Content -Path ".\appsettings.json" -Raw | ConvertFrom-Json
 
 # Get the CosmosDB URL and Primary Master Key values from the CosmosDB Azure resource
 $CosmosDB = Get-AzCosmosDBAccount -ResourceGroupName $TrainingResourceGroup -Name $CosmosDBAccountName
@@ -143,7 +143,7 @@ $AppSettings.CosmosDb.Key = $CosmosDBAccountKeyPrimaryMasterKey
 
 # Convert the PowerShell object to JSON format and overwrite the appsettings.json file with the new data from the CosmosDB Azure resource
 $AppSettingsJson = ConvertTo-Json -InputObject $AppSettings
-Out-File -InputObject $AppSettingsJson -FilePath "./appsettings.json"
+Out-File -InputObject $AppSettingsJson -FilePath ".\appsettings.json"
 
 # Update current environment variables with the values for the CosmosDB Azure resource
 # These are used if you are running the API locally
@@ -166,10 +166,10 @@ Set-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -Ap
 Write-Information "Compressing the API to a ZIP file for deployment..."
 $ZipFile = "Contoso.Healthcare.zip"
 Set-Location ..
-Compress-Archive -Path "./Contoso.Healthcare/bin/Release/net7.0/*" -DestinationPath "./Contoso.Healthcare.zip" -Update
+Compress-Archive -Path ".\Contoso.Healthcare\bin\Release\net7.0\*" -DestinationPath ".\Contoso.Healthcare.zip" -Update
 
 # Deploy application to App Service
 Write-Information "Deploying the API to Azure App Service..."
-Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath "./$ZipFile" -Force
+Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath ".\$ZipFile" -Force
 
 Write-Information "The training's pre-deployment and initial configuration of Azure resources is now complete."
