@@ -32,6 +32,8 @@ if (Get-Module -Name Az -ListAvailable) {
 # Get information from training user
 Write-Host "First, we will gather some information to prep for resource deployment."
 Start-Sleep -Seconds 2
+$AzureTenant = Read-Host "Input the Tenant ID or Tenant Name of the Azure AD tenant to use"
+Start-Sleep -Seconds 2
 $AzureSubscription = Read-Host "Input the Subscription ID or Subscription Name of the Azure subscription to use"
 Start-Sleep -Seconds 2
 
@@ -39,7 +41,7 @@ Start-Sleep -Seconds 2
     try {
         Write-Host "A new window in your web browser will open so that you may log in to your Microsoft account. Once logged in, PowerShell will be connected to Azure."
         Start-Sleep -Seconds 5
-        Connect-AzAccount -Environment AzureCloud -Subscription $AzureSubscription
+        Connect-AzAccount -Environment AzureCloud -Subscription $AzureSubscription -Tenant $AzureTenant
         Start-Sleep -Seconds 2
     }
     catch {
