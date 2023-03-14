@@ -170,6 +170,6 @@ Compress-Archive -Path ".\Contoso.Healthcare\bin\Release\net7.0\*" -DestinationP
 
 # Deploy application to App Service
 Write-Information "Deploying the API to Azure App Service..."
-Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath ".\$ZipFile" -Force
+Publish-AzWebApp -ResourceGroupName $TrainingResourceGroup -Name $AppServiceName -ArchivePath "$PWD\$ZipFile" -Force
 
 Write-Information "The training's pre-deployment and initial configuration of Azure resources is now complete."
